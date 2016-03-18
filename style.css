@@ -1,8 +1,14 @@
-.login-area{
 
+.login-area{
+width: 300px;
 float :right;
 }
+.posting-area{
 
+    width: 300px;
+   
+    float :right;
+}
 .votes{
 	float: left;
     margin-right: 7px;
