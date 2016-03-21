@@ -3,13 +3,18 @@
 
 <head>
     <title>CS431-Project1</title>
+
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <!--JQuery validation script-Start-->
+    <script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+    <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+    <!--JQuery validation script-End-->
+    <script src="https://code.getmdl.io/1.1.2/material.min.js"></script>
+
+    <script src="reddit.js"></script>
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.2/material.indigo-pink.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="style.css">
-
-    <script src="https://code.getmdl.io/1.1.2/material.min.js"></script>
-    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="reddit.js"></script>
 </head>
 
 <body>
@@ -23,7 +28,7 @@
                     <p><input type="submit" value="login"></p>
                 </form>
             </div>
-          </div>
+        </div>
     </header>
     <main>
         <div class="main-container">
@@ -32,44 +37,41 @@
                     <a href=""><span class="active">Newest</span></a><a href=""><span>Oldest</span></a></a>
                 </div>
             </div>
-
             <div class="postsContainer">
-              <br><br><br><br><br>
+                <br><br><br><br><br>
+                <!--Start POST fields code-->
                 <div class="posting-area">
-                  <form>
-                <fieldset>
-                    <legend>Add a new post!!</legend><br>
-                    <input type="checkbox" id="checkbox">
-                    <span class="mdl-checkbox__label">Login</span><br>
-                    <div id="textinput" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <textarea class="mdl-textfield__input" type="text" rows="2" id="input1" ></textarea>
-                        <label class="mdl-textfield__label" for="input1">Text lines...</label>
-                        <span class="mdl-textfield__error"></span>
-                    </div><br>
-                    <div id="urlinput" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="url" id="input2">
-                        <label class="mdl-textfield__label" for="input2">Enter URL...</label>
-                        <span class="mdl-textfield__error">Enter valid URL</span>
-                    </div><br>
-                    <div id="imageinput" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="url" id="input3">
-                        <label class="mdl-textfield__label" for="input3">Enter image URL...</label>
-                        <span class="mdl-textfield__error">Enter valid image URL</span>
-                    </div><br>
-                    <button id="postbutton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit">Post</button><br>
-                    <span id="spanbutton" class="mdl-textfield__error"></span>
-                </fieldset>
-                </form>
+                    <form id="postform">
+                        <fieldset>
+                            <legend>Add a new post!!</legend><br>
+                            <input type="checkbox" name="checkbox" id="checkbox">
+                            <span class="mdl-checkbox__label">Login</span><br>
+                            <div id="textinput" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <textarea class="mdl-textfield__input" name="input1" type="text" rows="2" id="input1"></textarea>
+                                <label class="mdl-textfield__label" for="input1">Text lines...</label>
 
-            </div>
-            </div>
+                            </div><br>
+                            <div id="urlinput" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" name="input2" type="url" id="input2">
+                                <label class="mdl-textfield__label" for="input2">Enter URL...</label>
 
+                            </div><br>
+                            <div id="imageinput" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" name="input3" type="url" id="input3" class="cleardefault">
+                                <label class="mdl-textfield__label" for="input3">Enter image URL...</label>
+
+                            </div><br>
+                            <button id="postbutton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" type="submit">Post</button><br><br>
+                            <span id="spanbutton" class="mdl-textfield__error"></span>
+                        </fieldset>
+                    </form>
+                </div>
+                <!--End POST fields code-->
+            </div>
     </main>
     <footer>
         <div class="footer-container">
         </div>
     </footer>
-
 </body>
-
 </html>
