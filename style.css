@@ -91,7 +91,7 @@ ul.menu li{
     flex-direction: column;
   }
 main{
-    height:60em;
+    height:918px;
     flex: 1 0 auto;
 
 }
@@ -120,6 +120,7 @@ margin:3em -16em;
     width:51em;
     padding-top:6em;
 }
+
 .postname{
     font-size: 12px;
     color:darkcyan;
@@ -130,8 +131,16 @@ margin:3em -16em;
     height:auto;
 }
 div#modal1.modal{
-    min-height: 79%;
+    min-height: 65%;
     width: 34%;
+}
+div#modal2.modal{
+    min-height: 60%;
+    width:34%;
+}
+div#modal3.modal{
+    min-height: 60%;
+    width:34%;
 }
 .rank{
     width: 5px;
@@ -208,4 +217,7 @@ footer{
     position: absolute;
     width:100%;
     background-color:rgba(17, 18, 23, 0.68);
+}
+footer.page-footer{
+    margin-top: 33%;
 }

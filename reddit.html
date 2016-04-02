@@ -33,8 +33,8 @@
                             <a href="#!" class="brand-logo">eHerald</a></div>
                         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                         <ul class="right hide-on-med-and-down">
-                            <li><a href="#">Log In</a></li>
-                            <li><a href="#">Sign Up</a></li>
+                            <li><a class="modal-trigger" href="#modal2">Log In</a></li>
+                            <li><a class="modal-trigger" href="#modal3">Sign Up</a></li>
                             <li><a class="postnews modal-trigger" href="#modal1">Post News</a></li>
                             <li class="search">
                                 <form>
@@ -47,8 +47,8 @@
                             </li>
                         </ul>
                         <ul class="side-nav" id="mobile-demo">
-                            <li><a href="#">Log In</a></li>
-                            <li><a href="#">Sign Up</a></li>
+                            <li><a class="modal-trigger" href="#modal2">Log In</a></li>
+                            <li><a class="modal-trigger" href="#modal3">Sign Up</a></li>
                             <li><a class="postnews modal-trigger" href="#modal1">Post News</a></li>
                             <li><a href="#"><i class="material-icons">search</i></a></li>
                         </ul>
@@ -66,20 +66,62 @@
 
                     <div class="divider line"></div> <br>
                 </div>
+                <!--Modal Login structure-->
+                <div id="modal2" class="modal">
+                            <div class="la modal-content">
+                           
+                           <legend>Login:</legend><br><br>
+                           <input type="text" placeholder="username" id="username"><br>
+                           <br>
+                           <input type="password" placeholder="password" id="password">
+                           </div>
+                           <br><br>
+                           <div class="modal-footer">
+                           <a id ="login" class="waves-effect waves-light btn">login</a>
+                           <a id= "logout" class="waves-effect waves-light btn">logout</a>
+                       </div>
+                           
+                  </div>
 
-                <!-- Modal Structure -->
+
+                <!--Modal Login structure end-->
+
+                <!-- Modal Structure for signup -->
+                <div id="modal3" class="modal">
+                             <div class=" na modal-content">
+                           <legend>Register:</legend><br>
+                           <input type="text" placeholder="username" id="reguser"><br>
+                           
+                           <input type="password" placeholder="password" id="regpass">
+                           
+                           <br>
+                           <input type="password" placeholder="Confirm password" id="confirmpass">
+                       </div>
+                           <br>
+                           <div class="modal-footer">
+                           <a id="Register" class="waves-effect waves-light btn">Register</a>
+                       </div>
+                           
+                 </div>
+
+            
+                <!--Modal signup structure end-->
+
+                <!-- Modal Structure for posts -->
                 <div id="modal1" class="modal">
-                    <div class="posting-area">
+                   
+                    <div class="posting-area ">
+                       
                         <form id="postform">
                             <div class="modal-content">
 
                                 <input type="checkbox" name="checkbox" id="checkbox">
-                                <span>Login</span><br>
-                                <div id="textinput" class="mdl-textfield mdl-js-textfield ">
+                                <span>POST</span><br>
+                                <div id="textinput" >
                                     <label id="posttitle" for="input1" data-error="">Post Title..</label>
                                     <input class="input-field validate" type="text" name="input1" id="input1">
                                 </div><br>
-                                <div id="urlinput" class="mdl-textfield mdl-js-textfield ">
+                                <div id="urlinput">
                                     <label id="mainurl" for="input2" >Enter URL...</label>
                                     <input class='input-field validate' name="input2" type="url" id="input2">
                                 </div><br>
@@ -89,13 +131,16 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button id="postbutton" class="mdl-button mdl-js-button  mdl-js-ripple-effect" type="submit">Post</button>
+                                
+                                <a id="postbutton" class="waves-effect waves-light btn" type="submit">Post</a>
                                 <span id="spanbutton"></span>
                             </div>
                         </form>
+                    
                     </div>
+                
                 </div>
-
+                <!--Modal post structure end-->
 
                 <div class="postsContainer">
                 </div>

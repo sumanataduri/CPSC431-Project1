@@ -23,18 +23,19 @@ var main = function() {
                     reddit.id + " class='imageDivLink' ></div>" + "<div id=" + reddit.id +
                     " class='contentDivImg'></div>" + "</div>";
 
+                     $("#postform")[0].reset(); //For posting areas
 
-                $(postsList).prependTo('div.postsContainer');
+                $(postsList).appendTo('div.postsContainer');
                 $("#" + reddit.id + ".votesNum").text(reddit.likes);
                 i = i + 1;
-                if (reddit.image_link != "image/herald.jpg") {
-                    // alert(reddit.id);
+                if (reddit.image_link != "image/noimage.jpg") {
+                    
                     $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons thumbdown'>play_circle_filled</i>");
                 }
                 $("#" + reddit.id + ".imageDivLink").on("click", function() {
                     if ($("#" + this.id + ".contentDivImg").css('display') === 'none') {
                         $(".contentDivImg").hide();
-                        $("#" + this.id + ".contentDivImg").html("<iframe id=" + reddit.id + " src=" + JSON.stringify(reddit.image_link) + " width='auto' height='auto' frameborder='0' allowfullscreen></iframe>");
+                        $("#" + this.id + ".contentDivImg").html("<img id=" + reddit.id + " src=" + JSON.stringify(reddit.image_link) + "  frameborder='0' allowfullscreen></iframe>");
                         $("#" + this.id + ".contentDivImg").css('display', 'block');
                         $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons thumbdown'>pause_circle_filled</i>");
                     } else {
@@ -43,19 +44,20 @@ var main = function() {
                     }
                 });
 
-                $("#postform")[0].reset(); //For posting area
+                
             });
 
             jsondata = getData;
             totalnumofitems = getData.length;
             pages(totalnumofitems);
         });
-        $(".button-collapse").sideNav();
+        
+    }
+    $(".button-collapse").sideNav();
         $('.modal-trigger').leanModal();
         $('.tooltipped').tooltip({
             delay: 50
         });
-    }
     //Start- hovering action on posts
 
     $("div").on("mouseover", "div.postContent", function() {
@@ -110,7 +112,9 @@ var main = function() {
         }
         return Math.floor(seconds) + " seconds ago";
     }
-
+function resizeIframe(obj){
+    obj.style.height=obj.contentWindow.document.body.scrollHeight+ 'px';
+}
 
     //Start- for postform validation
 
@@ -177,7 +181,7 @@ var main = function() {
                         $("#postform")[0].reset();
                             }
                         }
-                        else if($("#input3").val()!=="undefined"){
+                        else if($("#input3").val()!==undefined){
                             if(JSON.stringify(reddit1.image_link) === $("#input3").val()){
                             alert($("#input3").val());
                             element.preventDefault();
@@ -199,16 +203,16 @@ var main = function() {
               else
               {
                 if (form.valid() === true) {
-                        alert("in form valid");
                         var date = new Date();
                         $("#spanbutton").css({
                             "visibility": "visible"
                         }).text("");
-                        if ($("#input3").val() === "undefined") {
+                        if ($("#input3").val() === undefined) {
+                            alert("posting only 2 fields");
                             $.post("http://localhost:3000/reddit", {
                                 "link_title": $("#input1").val(),
                                 "main_link": $("#input2").val(),
-                                "image_link": "image/herald.jpg",
+                                "image_link": "image/noimage.jpg",
                                 "likes": 0,
                                 "post_time": date
                             }, function() {
@@ -216,6 +220,7 @@ var main = function() {
 
                             });
                         } else {
+                            alert("posting all fields")
                             $.post("http://localhost:3000/reddit", {
                                 "link_title": $("#input1").val(),
                                 "main_link": $("#input2").val(),
@@ -259,7 +264,7 @@ var main = function() {
     /* if($("#"+this.id+".contentDivImg").css('display')==="block "){
             $("#"+this.id+".contentDivImg").css('display','none !important');
             
-            $("#" + this.id +".imageDivLink").html("<img src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/3d-transparent-glass-icons-signs/089099-3d-transparent-glass-icon-signs-first-aid1.png' width='20' height='20'>");
+            $("#" + this.id +".imageDivLink").html("<img src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/3d-transparent-glass-icons-signs/089099-3d-transparent-glass-icon-signs-first-aid1.png' width='20' hide         ight='20'>");
          }
          else{
             $("#" + this.id +".contentDivImg").css('display','block !important');
@@ -274,19 +279,21 @@ var main = function() {
 
     //Start- code for Pagination
     function pages(totalnumofitems) {
-        var numofitems_page = 5,
+        var numofitems_page = 10,
             numofpages = Math.ceil(totalnumofitems / numofitems_page),
             pagenumbers;
+            $("div.postsContainer").children().hide();
+            $("ul.pagination").empty();
         for (var i = 1; i <= numofpages; i++) {
             pagenumbers = "<li class='waves-effect'>" + i + "</li>";
             $(pagenumbers).appendTo("ul.pagination");
         }
         $("div.postsContainer").children().hide();
-        $("div.postsContainer div:nth-child(-n+5)").slice(0).show();
+        $("div.postsContainer div:nth-child(-n+10)").slice(0).show();
         $("ul.pagination").on("click", "li", function() {
             var page = $(this).text(),
-                x = page * 5,
-                y = (page - 1) * 5;
+                x = page * 10,
+                y = (page - 1) * 10;
             $("li").removeClass("pages");
             $(this).addClass("pages");
             $("div.postsContainer").children().hide();
