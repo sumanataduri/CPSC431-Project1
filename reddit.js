@@ -1,22 +1,21 @@
 var main = function() {
     "use strict";
-    var i = 1,
-        totalnumofitems,
+    var totalnumofitems,
         jsondata;
 
     function myfunction() {
         $.get("http://localhost:3000/reddit", function(getData) {
+            $("div.postsContainer").empty();
             getData.forEach(function(reddit) {
-
+                
                 var postsList = "<div class ='postContent z-depth-1'>" + "<div class='rank'>" +
-                    "<p id='numbering'>" + i + "</p>" + "</div>" + "<div class = 'votes'>" +
+                    "<p id='numbering'>" + reddit.id + "</p>" + "</div>" + "<div class = 'votes'>" +
                     "<i class='material-icons thumbup'>thumb_up</i>" + "<br>" + "<strong id =" +
                     reddit.id + " class='votesNum'>" + "</strong>" + "<br>" +
                     "<i class='material-icons thumbdown'>thumb_down</i>" +
-                    "</div>" + "<div class='image'>" + "<a href=" + JSON.stringify(reddit.main_link) + ">" +
-                    "<img autoplay='false' src=" + JSON.stringify(reddit.image_link) +
-                    "width='70' height='60' class='postimage'>" + "</a>" + "</div>" + "<div class='Content-List'>" +
-                    "<a href=" + JSON.stringify(reddit.main_link) + ">" + "<p class='postname'>" +
+                    "</div>" + "<div class='image'>" + "<a href=" + reddit.main_link + ">" +
+                    "<img src=" + reddit.image_link +"  class='postimage'>" + "</a>" + "</div>" + "<div class='Content-List'>" +
+                    "<a href=" + reddit.main_link + ">" + "<p class='postname'>" +
                     reddit.link_title + "</p>" + "<div class='subtitles'>" + "<p class='username'>By " +
                     reddit.username + "</p>" + "<p class='time'>" + timeSince(new Date(reddit.post_time)) +
                     "</p>" + "<p class='share'> share" + "</p>" + "</div>" + "</a>" + "<div id=" +
@@ -26,21 +25,20 @@ var main = function() {
                      $("#postform")[0].reset(); //For posting areas
 
                 $(postsList).appendTo('div.postsContainer');
-                $("#" + reddit.id + ".votesNum").text(reddit.likes);
-                i = i + 1;
+                $("#" + reddit.id + ".votesNum").text(reddit.likes);                
                 if (reddit.image_link != "image/noimage.jpg") {
                     
-                    $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons thumbdown'>play_circle_filled</i>");
+                    $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons play'>play_circle_filled</i>");
                 }
                 $("#" + reddit.id + ".imageDivLink").on("click", function() {
                     if ($("#" + this.id + ".contentDivImg").css('display') === 'none') {
                         $(".contentDivImg").hide();
                         $("#" + this.id + ".contentDivImg").html("<img id=" + reddit.id + " src=" + JSON.stringify(reddit.image_link) + "  frameborder='0' allowfullscreen></iframe>");
                         $("#" + this.id + ".contentDivImg").css('display', 'block');
-                        $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons thumbdown'>pause_circle_filled</i>");
+                        $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons play'>pause_circle_filled</i>");
                     } else {
                         $("#" + this.id + ".contentDivImg").css('display', 'none');
-                        $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons thumbdown'>play_circle_filled</i>");
+                        $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons play'>play_circle_filled</i>");
                     }
                 });
 
@@ -56,7 +54,7 @@ var main = function() {
     $(".button-collapse").sideNav();
         $('.modal-trigger').leanModal();
         $('.tooltipped').tooltip({
-            delay: 50
+           delay: 50
         });
     //Start- hovering action on posts
 
@@ -83,6 +81,12 @@ var main = function() {
         $(this).css("color", "darkgrey");
     });
 
+$("div").on("mouseover", "i.material-icons.play ", function() {
+        $(this).css("color", "pink");
+    });
+    $("div").on("mouseleave", "i.material-icons.play", function() {
+        $(this).css("color", "darkgrey");
+    });
     myfunction();
 
     function timeSince(date) {
@@ -130,6 +134,7 @@ function resizeIframe(obj){
             }
         }
     });
+  
     
     $("a.postnews").on("click", function() {
         var form = $("#postform");
@@ -253,7 +258,7 @@ function resizeIframe(obj){
     //End-code for post fields
 
     $("div.addimage").on("click", function() {
-        $("div.addimage").replaceWith("<div id='imageinput'><label id='imageurl' for='input3'>Enter image URL...</label><input class='input-field validate tooltipped' data-position='right' data-delay='50' data-tooltip='We only accept video urls from Youtube/Vimeo/imgur.com' name='input3' type='url' id='input3'></div>");
+        $("div.addimage").replaceWith("<div id='imageinput'><label id='imageurl' for='input3'>Enter image URL...</label><input class='input-field validate' name='input3' type='url' id='input3'></div>");
     });
 
     //start- image display
@@ -282,7 +287,7 @@ function resizeIframe(obj){
         var numofitems_page = 10,
             numofpages = Math.ceil(totalnumofitems / numofitems_page),
             pagenumbers;
-            $("div.postsContainer").children().hide();
+        //  $("div.postsContainer").children().hide();
             $("ul.pagination").empty();
         for (var i = 1; i <= numofpages; i++) {
             pagenumbers = "<li class='waves-effect'>" + i + "</li>";

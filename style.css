@@ -177,12 +177,18 @@ div#modal3.modal{
   font-size:13px;
     color:darkgrey;  
  }
+ .play{
+      font-size:20px;
+    color:darkgrey; 
+ }
  	.postimage{
     display: table-cell;
     text-align:left;
     vertical-align: top;
     border-radius: 1em;
     margin-top: 6px;
+    width:70px;
+     height:60px;
     }
 	.Content-List {
     overflow: hidden;
