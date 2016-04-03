@@ -1,17 +1,17 @@
 var main = function() {
     "use strict";
-    var totalnumofitems,
-        jsondata;
+    var user= { id:0 ,userName:"" },//object tracks the user identity.
+    username, pwd, like=[], notLike=[];// like, notLike are lists to capture user data while the program is running, and store it in the json file,every time a like or notlike event triggered.
 
     function myfunction() {
         $.get("http://localhost:3000/reddit", function(getData) {
-            $("div.postsContainer").empty();
+            $("div.postsContainer").empty();   //newly added
             getData.forEach(function(reddit) {
                 
                 var postsList = "<div class ='postContent z-depth-1'>" + "<div class='rank'>" +
                     "<p id='numbering'>" + reddit.id + "</p>" + "</div>" + "<div class = 'votes'>" +
                     "<i class='material-icons thumbup'>thumb_up</i>" + "<br>" + "<strong id =" +
-                    reddit.id + " class='votesNum'>" + "</strong>" + "<br>" +
+                    reddit.id + " class='votesNum'>"+reddit.likes + "</strong>" + "<br>" +
                     "<i class='material-icons thumbdown'>thumb_down</i>" +
                     "</div>" + "<div class='image'>" + "<a href=" + reddit.main_link + ">" +
                     "<img src=" + reddit.image_link +"  class='postimage'>" + "</a>" + "</div>" + "<div class='Content-List'>" +
@@ -25,31 +25,29 @@ var main = function() {
                      $("#postform")[0].reset(); //For posting areas
 
                 $(postsList).appendTo('div.postsContainer');
-                $("#" + reddit.id + ".votesNum").text(reddit.likes);                
+                  //Start-image display         
                 if (reddit.image_link != "image/noimage.jpg") {
                     
                     $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons play'>play_circle_filled</i>");
                 }
-                $("#" + reddit.id + ".imageDivLink").on("click", function() {
+
+                $("div").on("click","#" + reddit.id + ".imageDivLink" , function() {
+                    
                     if ($("#" + this.id + ".contentDivImg").css('display') === 'none') {
+                       $("div.imageDivLink i.pause").not(this).text("play_circle_filled");
                         $(".contentDivImg").hide();
-                        $("#" + this.id + ".contentDivImg").html("<img id=" + reddit.id + " src=" + JSON.stringify(reddit.image_link) + "  frameborder='0' allowfullscreen></iframe>");
+                        $("#" + this.id + ".contentDivImg").html("<iframe id=" + reddit.id + " src=" + JSON.stringify(reddit.image_link) + " width='100%' height='300'  frameborder='0' scrolling='no' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>");
                         $("#" + this.id + ".contentDivImg").css('display', 'block');
-                        $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons play'>pause_circle_filled</i>");
+                        $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons pause'>pause_circle_filled</i>");
                     } else {
                         $("#" + this.id + ".contentDivImg").css('display', 'none');
                         $("#" + reddit.id + ".imageDivLink").html("<i class='material-icons play'>play_circle_filled</i>");
                     }
                 });
-
-                
+                //End-image display
             });
-
-            jsondata = getData;
-            totalnumofitems = getData.length;
-            pages(totalnumofitems);
+            pages(getData.length);
         });
-        
     }
     $(".button-collapse").sideNav();
         $('.modal-trigger').leanModal();
@@ -80,15 +78,26 @@ var main = function() {
     $("div").on("mouseleave", "i.material-icons.thumbdown", function() {
         $(this).css("color", "darkgrey");
     });
-
-$("div").on("mouseover", "i.material-icons.play ", function() {
-        $(this).css("color", "pink");
+    //End- thumb up/down hovering.
+    //Start- play hovering
+    $("div").on("mouseover", "i.material-icons.play ", function() {
+        $(this).css("color", "blue");
     });
     $("div").on("mouseleave", "i.material-icons.play", function() {
         $(this).css("color", "darkgrey");
     });
+
+    $("div").on("mouseover", "i.material-icons.pause ", function() {
+        $(this).css("color", "blue");
+    });
+    $("div").on("mouseleave", "i.material-icons.pause", function() {
+        $(this).css("color", "darkgrey");
+    });
+    //End- play hovering
+
     myfunction();
 
+   //Start- time display
     function timeSince(date) {
 
         var seconds = Math.floor((new Date() - date) / 1000);
@@ -116,6 +125,7 @@ $("div").on("mouseover", "i.material-icons.play ", function() {
         }
         return Math.floor(seconds) + " seconds ago";
     }
+    //End-Time display
 function resizeIframe(obj){
     obj.style.height=obj.contentWindow.document.body.scrollHeight+ 'px';
 }
@@ -134,16 +144,15 @@ function resizeIframe(obj){
             }
         }
     });
-  
-    
-    $("a.postnews").on("click", function() {
+     $("a.postnews").on("click", function() {
         var form = $("#postform");
         form.validate(); //End- post form validation
         //Start- JQuery code for post fields
+        if(username){
         $("#postbutton").click(function(element) {
 
             var check = $("#checkbox").is(':checked');
-            if (check === true) {
+           
                 if ($("#input1").val() === "" || $("#input2").val() == "" || $("#input3").val() == "") {
                     element.preventDefault();
                     setTimeout(fade_out, 5000);
@@ -212,7 +221,7 @@ function resizeIframe(obj){
                         $("#spanbutton").css({
                             "visibility": "visible"
                         }).text("");
-                        if ($("#input3").val() === undefined) {
+                        if (($("#input3").val() === undefined)&&($("#input4").val() === undefined)) {
                             alert("posting only 2 fields");
                             $.post("http://localhost:3000/reddit", {
                                 "link_title": $("#input1").val(),
@@ -224,41 +233,89 @@ function resizeIframe(obj){
                                 myfunction();
 
                             });
-                        } else {
-                            alert("posting all fields")
+                        } else if(($("#input3").val() !== undefined)&&($("#input4").val() === undefined)) {
+                            var image=$("#input3").val(),
+                                regex="([^\s]+(\.(?i)(jpg|png|gif|bmp|jpeg|tif|tiff))$)";
+                            if(image.match(regex)){
+                                alert("matched")
+                              alert("posting value from image fields");
                             $.post("http://localhost:3000/reddit", {
                                 "link_title": $("#input1").val(),
                                 "main_link": $("#input2").val(),
                                 "image_link": $("#input3").val(),
+                                "image":1,
+                                "video":0,
+                                "likes": 0,
+                                "post_time": date
+                            }, function() {
+                                myfunction();
+                            });
+                            $('#modal1').closeModal();
+                                }else{
+                                 alert("not matched");
+                                 element.preventDefault();
+                                setTimeout(fade_out2, 5000);
+
+                                function fade_out2() {
+                                $("#spanbutton").fadeOut().empty();
+                                }
+                                $("#spanbutton").css({
+                                "visibility": "visible",
+                                "display": "inline"}).text("Accepts only gif/.png/.jpeg/.jpg/.tif/.tiff/.bmp image formats");
+                            }
+                        }
+                        else{
+                            var videourl=$("#input4").val();
+                            alert(videourl);
+                            if ((videourl.match('https?://(www.)?youtube|youtu\.be'))||(videourl.match('https?://(player.)?vimeo\.com'))||(videourl.match("^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:gifv)$"))) {
+                                alert("posting value from video fields");
+                            $.post("http://localhost:3000/reddit", {
+                                "link_title": $("#input1").val(),
+                                "main_link": $("#input2").val(),
+                                "image_link": $("#input4").val(),
+                                "image":0,
+                                "video":1,
                                 "likes": 0,
                                 "post_time": date
                             }, function() {
                                 myfunction();
 
                             });
+                            $('#modal1').closeModal();
+                        }else{
+                            alert("not matched");
+                                 element.preventDefault();
+                                setTimeout(fade_out3, 5000);
+
+                                function fade_out3() {
+                                $("#spanbutton").fadeOut().empty();
+                                }
+                                $("#spanbutton").css({
+                                "visibility": "visible",
+                                "display": "inline"}).text("Accepts Video URL's only from youtube/vimeo/.gifv formats");
+                            }
+                        }
                         }
                     }
-              }
-            } else {
-                element.preventDefault();
-                setTimeout(fade_out1, 5000);
-
-                function fade_out1() {
-                    $("#spanbutton").fadeOut().empty();
-                }
-                $("#spanbutton").css({
-                    "visibility": "visible",
-                    "display": "inline"
-                }).text("Log in to post");
-            }
+              
+         
+            
         });
+        }else {
+                //element.preventDefault();
+                $('#modal1').closeModal();
+                 $('#modal2').openModal();
+            }
     });
+        //End-code for post fields
 
-
-    //End-code for post fields
-
-    $("div.addimage").on("click", function() {
-        $("div.addimage").replaceWith("<div id='imageinput'><label id='imageurl' for='input3'>Enter image URL...</label><input class='input-field validate' name='input3' type='url' id='input3'></div>");
+    $("div").on("click",".addimage" , function() {
+        $("div#videoinput").replaceWith("<div class='addvideo'><a class='videourl btn waves-effect waves-light grey'>Add Video URL</a></div> ");
+        $("div.addimage").replaceWith("<div id='imageinput'><input class='input-field validate' placeholder='Image URL' name='input3' type='url' id='input3'></div>");
+    });
+    $("div").on("click",".addvideo",function(){
+        $("div#imageinput").replaceWith("<div class='addimage'><a class='imgurl btn waves-effect waves-light grey'>Add Image URL</a></div>");
+        $("div.addvideo").replaceWith("<div id='videoinput'><input class='input-field validate' placeholder='Video URL' name='input4' type='url' id='input4'></div>");
     });
 
     //start- image display
@@ -269,7 +326,7 @@ function resizeIframe(obj){
     /* if($("#"+this.id+".contentDivImg").css('display')==="block "){
             $("#"+this.id+".contentDivImg").css('display','none !important');
             
-            $("#" + this.id +".imageDivLink").html("<img src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/3d-transparent-glass-icons-signs/089099-3d-transparent-glass-icon-signs-first-aid1.png' width='20' hide         ight='20'>");
+            $("#" + this.id +".imageDivLink").html("<img src='http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/3d-transparent-glass-icons-signs/089099-3d-transparent-glass-icon-signs-first-aid1.png' width='20' height='20'>");
          }
          else{
             $("#" + this.id +".contentDivImg").css('display','block !important');

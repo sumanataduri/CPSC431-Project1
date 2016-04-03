@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <!--End materialize css-->
     <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -118,15 +119,17 @@
                                 <input type="checkbox" name="checkbox" id="checkbox">
                                 <span>POST</span><br>
                                 <div id="textinput" >
-                                    <label id="posttitle" for="input1" data-error="">Post Title..</label>
-                                    <input class="input-field validate" type="text" name="input1" id="input1">
+                                    
+                                    <input class="input-field validate" placeholder="Post Title" type="text" name="input1" id="input1">
                                 </div><br>
                                 <div id="urlinput">
-                                    <label id="mainurl" for="input2" >Enter URL...</label>
-                                    <input class='input-field validate' name="input2" type="url" id="input2">
+                                    <input class='input-field validate' placeholder="URL" name="input2" type="url" id="input2">
                                 </div><br>
                                 <div class="addimage">
-                                    <a class="btn waves-effect waves-light grey">Add Image or Video URL</a>
+                                    <a class="imgurl btn waves-effect waves-light grey">Add Image URL</a>
+                                </div><br>
+                                <div class="addvideo">
+                                    <a class="videourl btn waves-effect waves-light grey">Add Video URL</a>
                                 </div>
                             </div>
 
